@@ -106,4 +106,35 @@ cat << EOF > ${TAJO_INSTALL_DIR}/conf/storage-site.json
 }
 EOF
 
+# Set up conf/catalog-site.xml
+if [ ! -z $CATALOG_HOST ]
+then
+  CATALOG_URI="jdbc:mysql://${CATALOG_HOST}:3306/${CATALOG_DB}?createDatabaseIfNotExist=true"
+  cat << EOF > ${TAJO_INSTALL_DIR}/conf/catalog-site.xml
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>tajo.catalog.jdbc.connection.id</name>
+    <value>${CATALOG_ID}</value>
+  </property>
+  <property>
+    <name>tajo.catalog.jdbc.connection.password</name>
+    <value>${CATALOG_PW}</value>
+  </property>
+  <property>
+    <name>tajo.catalog.store.class</name>
+    <value>org.apache.tajo.catalog.store.MySQLStore</value>
+  </property>
+  <property>
+    <name>tajo.catalog.jdbc.uri</name>
+    <value>${CATALOG_URI}</value>
+  </property>
+</configuration>
+EOF
+  # Install mysql-connector
+  apt-get install --yes libmysql-java
+  cp /usr/share/java/mysql-connector-java.jar ${TAJO_INSTALL_DIR}/lib/
+fi
+
 sudo chown -R hadoop.hadoop ${TAJO_INSTALL_DIR}/conf
