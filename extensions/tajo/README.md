@@ -4,7 +4,7 @@ Deploying Apache Tajo™ on Google Cloud Platform
 Apache Tajo
 -----------
 
-Apache Tajo is a robust big data warehouse system. Dubbed “an SQL-on-Hadoop”, Tajo is optimized for running low-latency, scalable ad-hoc queries and ETL jobs on large-data sets stored on both HDFS and other data sources including Amazon S3 and Google Cloud Storage. By supporting SQL standards and leveraging advanced query optimization techniques, Tajo support both interactive analysis and complex ETL in a single solution. 
+Apache Tajo is a robust big data warehouse system. Dubbed "an SQL-on-Hadoo", Tajo is optimized for running low-latency, scalable ad-hoc queries and ETL jobs on large data sets stored on both HDFS and other data sources including Amazon S3 and Google Cloud Storage. By supporting SQL standards and leveraging advanced query optimization techniques, Tajo support both interactive analysis and complex ETL in a single solution. 
 
 This documents explains how to setup Tajo cluster on Google Cloud Platform using bdutil.
 
@@ -34,7 +34,7 @@ Getting Started
 
     ###############################################################################
 
-    GCE_ZONE="us-central1-f"
+    GCE_ZONE="YOUR_ZONE"
     
     # change it to your instance type.
     GCE_MACHINE_TYPE='n1-standard-4'  
@@ -58,16 +58,16 @@ Getting Started
     
 By default, Tajo stores its meta data in built-in Derby database in Tajo master node. Since it is ephemeral storage, you'd better use it for test purpose only. For continuous analysis work, using permanent meta store such as cloudSQL is strongly recommended.
 
-To use existing cloudSQL instance for Tajo meta store, set the instance id and connection information. 
-In case you set non-existing instance id, new cloudSQL instance will be created automatically. In this case, the instance id should be unique and userid should be 'root'.   
+To use existing cloudSQL or MySQL instance for Tajo meta store, set the instance id and connection information. 
+Tajo master node need to be allowed to connect catalog server. 
 
     $ vi extensions/tajo/tajo_env.sh
 
     ```
-    CLOUD_SQL_INSTANCE_ID='my-tajo-meta'
-    CLOUD_SQL_CON_ID='USERID'
-    CLOUD_SQL_CON_PW='PASSWORD'
-    CLOUD_SQL_CON_DB='tajo'
+    CATALOG_HOST="YOUR_DBMS_HOST"
+    CATALOG_ID="YOUR_DBMS_ID"
+    CATALOG_PW="YOUR_DBMS_PW"
+    CATALOG_DB=tajo
     ```
 
 To use Derby, leave it blank.
@@ -75,15 +75,7 @@ To use Derby, leave it blank.
 Deployment
 ----------
 
-To deploy Tajo without Hadoop daemon:
-
-    ./bdutil -e extensions/tajo/tajo_env.sh deploy
-
-Or you can use shorthand syntax instead:
-
-    ./bdutil -e tajo deploy
-
-To deploy Tajo with Hadoop daemon: 
+To deploy Tajo with Hadoop2 daemon:
 
     $ ./bdutil -e hadoop2,tajo deploy
     
