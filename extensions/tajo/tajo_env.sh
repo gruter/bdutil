@@ -17,9 +17,8 @@
 # and configured. 
 # Usage: ./bdutil -e hadoop2,tajo deploy
 
-# URIs of Tajo tarball to install.
-# Recommended Tajo version: Apache Tajo 0.11.0 or higher (eg. gs://your_bucket/tajo-x.xx.x.tar.gz)
-TAJO_TARBALL_URI='gs://tajo_release/tajo-0.11.0.tar.gz'
+# URIs of Tajo tarball to install. (eg. gs://your_bucket/tajo-x.xx.x.tar.gz)
+TAJO_TARBALL_URI='gs://tajo_release/tajo-stable.tar.gz'
 
 # Tajo root directory
 TAJO_ROOT_DIR="gs://${CONFIGBUCKET}/tajo"
